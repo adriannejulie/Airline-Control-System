@@ -154,6 +154,8 @@ VALUES
 DROP TABLE IF EXISTS USERS;
 CREATE TABLE USERS(
     ID_NO               INT,
+    USERNAME			VARCHAR(40),
+    PASSWORD			VARCHAR(40),
     NAME                VARCHAR(40),
     BIRTH               DATE,
     PHONE_NUMBER        VARCHAR(15),
@@ -168,32 +170,32 @@ CREATE TABLE USERS(
     FOREIGN KEY(FLIGHT_NUMBER) REFERENCES  FLIGHT(FLIGHT_NUMBER)
 );
 
-INSERT INTO USERS(ID_NO, NAME, BIRTH, PHONE_NUMBER, CARD_NUMBER, EMAIL, FLIGHT_NUMBER, SEAT_TYPE, SEAT_NUMBER, MEMBERSHIP_ID, INSURANCE_STATUS)
+INSERT INTO USERS(ID_NO, USERNAME, PASSWORD, NAME, BIRTH, PHONE_NUMBER, CARD_NUMBER, EMAIL, FLIGHT_NUMBER, SEAT_TYPE, SEAT_NUMBER, MEMBERSHIP_ID, INSURANCE_STATUS)
 VALUES
-(0001, 'George Gower', '2000-12-13', '403-123-1234', '4111111111111111', 'GeorgeGower@example.com', 01, 'Comfort', 11, 0001, 1),
-(0002, 'Michiel Sittow', '2001-11-03', '467-321-2345', '5431111111111111', 'MichielSittow@example.com', 02, 'Ordinary', 26, 0000, 0),
-(0003, 'Lucas de Heere', '1999-09-11', '403-678-3875', '371111111111114', 'LucasdeHeere@example.com', 03, 'Business', 01, 0002, 1),
-(0004, 'Pablo Picasso', '1984-02-01', '403-098-0683', '36000000000008', 'PabloPicasso@example.com', 04, 'Comfort', 11, 0000, 0),
-(0005, 'Guillaume Coustou', '2003-06-22', '587-123-2356', '123455678901234', 'GuillaumeCoustou@example.com', 05, 'Ordinary', 26, 0003, 1),
-(0006, 'Bobby Brown', '1999-12-22', '403-753-2759', '6574839201928374', 'BobbyBrown@example.com', 06, 'Ordinary', 26, 0004, 1),
-(0007, 'Yuki Ishikawa', '1995-12-11', '467-192-1284', '1223344556677889', 'YukiIshikawa@example.com', 07, 'Comfort', 11, 0005, 0),
-(0008, 'Hershey Chips', '2003-05-22', '416-746-0298', '1019181716151413', 'HersheyChips@example.com', 08, 'Ordinary', 26, 0006, 0),
-(0009, 'Tim Hortons', '1965-04-21', '587-953-9923', '6564747384950628', 'TimHortons@example.com', 09, 'Business', 01, 0000, 1),
-(0010, 'Cal Garyian', '1974-06-23', '403-908-0085', '3436373829938465', 'CalGaryian@example.com', 10, 'Comfort', 11, 0007, 0),
-(0011, 'Ed Montonian', '1982-08-20', '587-002-9352', '2349765492738456', 'EdMontonian@example.com', 11, 'Business', 01, 0000, 1),
-(0012, 'Carey Beary', '2000-09-18', '403-034-8105', '0182736475839284', 'CareyBeary@example.com', 12, 'Ordinary', 26, 0000, 0),
-(0013, 'Nick Ey', '1965-10-16', '416-652-8234', '6193956244768703', 'NickEy@example.com', 13, 'Comfort', 11, 0008, 1),
-(0014, 'Stephano Montoya', '1945-10-15', '467-564-8723', '1253680986384572', 'StephanoMontoya@example.com', 14, 'Business', 01, 0000, 1),
-(0015, 'Sue Perstore', '1987-12-01', '467-079-7352', '9837483927463718', 'SuePerstore@example.com', 15, 'Business', 01, 0009, 0),
-(0016, 'John Wick', '1995-04-15', '416-938-8374', '4829175630986245', 'JohnWick@example.com', 16, 'Ordinary', 26,  0000, 1),
-(0017, 'Tess La', '1988-09-05', '403-124-0933', '7632891456723401', 'TessLa@example.com', 17, 'Ordinary', 26, 0010, 0),
-(0018, 'Mercy Des', '2000-08-18', '587-934-8245', '2156984710328765', 'MercyDes@example.com', 18, 'Comfort', 11, 0011, 0),
-(0019, 'Porcha Lux', '1992-12-10', '587-283-9084', '5974820136481093', 'PorchaLux@example.com', 19, 'Business', 01, 0012, 1),
-(0020, 'Bas Ketbal', '1985-03-30', '416-824-1872', '8310246570981537', 'BasKetbal@example.com', 20, 'Ordinary', 26, 0000, 1),
-(0021, 'Emily Thompson', '2002-07-12', '467-234-8753', '4567890123456789', 'EmilyThompson@example.com', 21, 'Ordinary', 26, 0000, 0),
-(0022, 'Olivia Chang', '1998-11-03', '403-935-9823', '1023745638905162', 'OliviaChang@example.com', 22, 'Ordinary', 26, 0000, 1),
-(0023, 'Sophia Patel', '1989-09-20', '416-024-8872', '8743210956328901', 'SophiaPatel@example.com', 23, 'Comfort', 11, 0013, 1),
-(0024, 'Ava Khan', '2001-04-22', '467-464-2445', '3456789012345678', 'AvaKhan@example.com', 24, 'Business', 01, 0014, 1);
+(0001, 'GeorgeUsername', 'GeorgePassword', 'George Gower', '2000-12-13', '403-123-1234', '4111111111111111', 'GeorgeGower@example.com', 01, 'Comfort', 11, 0001, 1),
+(0002, 'MichielUsername', 'MichielPassword', 'Michiel Sittow', '2001-11-03', '467-321-2345', '5431111111111111', 'MichielSittow@example.com', 02, 'Ordinary', 26, 0000, 0),
+(0003, 'LucasUsername', 'LucasPassword', 'Lucas de Heere', '1999-09-11', '403-678-3875', '371111111111114', 'LucasdeHeere@example.com', 03, 'Business', 01, 0002, 1),
+(0004, 'PabloUsername', 'PabloPassword', 'Pablo Picasso', '1984-02-01', '403-098-0683', '36000000000008', 'PabloPicasso@example.com', 04, 'Comfort', 11, 0000, 0),
+(0005, 'GuillaumeUsername', 'GuillaumePassword', 'Guillaume Coustou', '2003-06-22', '587-123-2356', '123455678901234', 'GuillaumeCoustou@example.com', 05, 'Ordinary', 26, 0003, 1),
+(0006, 'BobbyUsername', 'BobbyPassword', 'Bobby Brown', '1999-12-22', '403-753-2759', '6574839201928374', 'BobbyBrown@example.com', 06, 'Ordinary', 26, 0004, 1),
+(0007, 'YukiUsername', 'YukiPassword', 'Yuki Ishikawa', '1995-12-11', '467-192-1284', '1223344556677889', 'YukiIshikawa@example.com', 07, 'Comfort', 11, 0005, 0),
+(0008, 'HersheyUsername', 'HersheyPassword', 'Hershey Chips', '2003-05-22', '416-746-0298', '1019181716151413', 'HersheyChips@example.com', 08, 'Ordinary', 26, 0006, 0),
+(0009, 'TimUsername', 'TimPassword', 'Tim Hortons', '1965-04-21', '587-953-9923', '6564747384950628', 'TimHortons@example.com', 09, 'Business', 01, 0000, 1),
+(0010, 'CalUsername', 'CalPassword', 'Cal Garyian', '1974-06-23', '403-908-0085', '3436373829938465', 'CalGaryian@example.com', 10, 'Comfort', 11, 0007, 0),
+(0011, 'EdUsername', 'EdPassword', 'Ed Montonian', '1982-08-20', '587-002-9352', '2349765492738456', 'EdMontonian@example.com', 11, 'Business', 01, 0000, 1),
+(0012, 'CareyUsername', 'CareyPassword', 'Carey Beary', '2000-09-18', '403-034-8105', '0182736475839284', 'CareyBeary@example.com', 12, 'Ordinary', 26, 0000, 0),
+(0013, 'NickUsername', 'NickPassword', 'Nick Ey', '1965-10-16', '416-652-8234', '6193956244768703', 'NickEy@example.com', 13, 'Comfort', 11, 0008, 1),
+(0014, 'StephanoUsername', 'StephanoPassword', 'Stephano Montoya', '1945-10-15', '467-564-8723', '1253680986384572', 'StephanoMontoya@example.com', 14, 'Business', 01, 0000, 1),
+(0015, 'SueUsername', 'SuePassword', 'Sue Perstore', '1987-12-01', '467-079-7352', '9837483927463718', 'SuePerstore@example.com', 15, 'Business', 01, 0009, 0),
+(0016, 'JohnUsername', 'JohnPassword', 'John Wick', '1995-04-15', '416-938-8374', '4829175630986245', 'JohnWick@example.com', 16, 'Ordinary', 26, 0000, 1),
+(0017, 'TessUsername', 'TessPassword', 'Tess La', '1988-09-05', '403-124-0933', '7632891456723401', 'TessLa@example.com', 17, 'Ordinary', 26, 0010, 0),
+(0018, 'MercyUsername', 'MercyPassword', 'Mercy Des', '2000-08-18', '587-934-8245', '2156984710328765', 'MercyDes@example.com', 18, 'Comfort', 11, 0011, 0),
+(0019, 'PorchaUsername', 'PorchaPassword', 'Porcha Lux', '1992-12-10', '587-283-9084', '5974820136481093', 'PorchaLux@example.com', 19, 'Business', 01, 0012, 1),
+(0020, 'BasUsername', 'BasPassword', 'Bas Ketbal', '1985-03-30', '416-824-1872', '8310246570981537', 'BasKetbal@example.com', 20, 'Ordinary', 26, 0000, 1),
+(0021, 'EmilyUsername', 'EmilyPassword', 'Emily Thompson', '2002-07-12', '467-234-8753', '4567890123456789', 'EmilyThompson@example.com', 21, 'Ordinary', 26, 0000, 0),
+(0022, 'OliviaUsername', 'OliviaPassword', 'Olivia Chang', '1998-11-03', '403-935-9823', '1023745638905162', 'OliviaChang@example.com', 22, 'Ordinary', 26, 0000, 1),
+(0023, 'SophiaUsername', 'SophiaPassword', 'Sophia Patel', '1989-09-20', '416-024-8872', '8743210956328901', 'SophiaPatel@example.com', 23, 'Comfort', 11, 0013, 1),
+(0024, 'AvaUsername', 'AvaPassword', 'Ava Khan', '2001-04-22', '467-464-2445', '3456789012345678', 'AvaKhan@example.com', 24, 'Business', 01, 0014, 1);
 
 DROP TABLE IF EXISTS CUSTOMERS;
 CREATE TABLE CUSTOMERS(
