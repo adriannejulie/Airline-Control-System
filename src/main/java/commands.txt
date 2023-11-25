@@ -1,0 +1,6 @@
+
+
+javac src/main/java/DatabaseConnection.java
+
+connect to the database
+java -cp .:src/main/java/mysql-connector-java-8.0.23.jar src.main.java.DatabaseConnection
