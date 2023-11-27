@@ -109,7 +109,7 @@ VALUES
 (17, 'CYYZ','CYYC','2023-12-25 00:00:05', 17), /*Flights from Toronto to Calgary*/
 (18, 'CYYZ','CYYC','2023-12-25 12:00:05', 18),
 (19, 'CYYZ','CYYC','2023-12-27 00:00:05', 19),
-(20, 'CYYZ','CYYC','2023-12-27 12:00:05',,,.,..,,..,.,.ll, 20),
+(20, 'CYYZ','CYYC','2023-12-27 12:00:05', 20),
 
 (21, 'CYYC','CYVR','2023-12-29 00:00:05', 21), /*Flights from Calgary to Vancouver*/
 (22, 'CYYC','CYVR','2023-12-29 12:00:05', 22),
@@ -120,38 +120,42 @@ VALUES
 DROP TABLE  IF EXISTS AIRLINE_AGENT;
 CREATE TABLE AIRLINE_AGENT(
     AGENT_ID            INT,
+    NAME				VARCHAR(50),
     PRIMARY KEY(AGENT_ID),
     FOREIGN KEY(AGENT_ID) REFERENCES EMPLOYEE(ID_NO)
 );
 
-INSERT INTO AIRLINE_AGENT(AGENT_ID)
+INSERT INTO AIRLINE_AGENT(AGENT_ID, NAME)
 VALUES
-(1000), (1001), (1002), (1003), (1004), (1005);
+(1000, 'John Doe'), (1001, 'Jane Smith'), (1002, 'Michael Johnson'), (1003, 'Emily Davis'), (1004, 'David Brown'), (1005, 'Sarah Miller');
 
 
 DROP TABLE IF EXISTS CREW;
 CREATE TABLE CREW(
     CREW_ID             INT,
+    NAME				VARCHAR(50),
     PRIMARY KEY(CREW_ID),
     FOREIGN KEY(CREW_ID) REFERENCES EMPLOYEE(ID_NO)
 );
 
-INSERT INTO CREW(CREW_ID)
+INSERT INTO CREW(CREW_ID, NAME)
 VALUES
-(2000), (2001), (2002), (2003), (2004), (2005), /* ID_NOs for Pilots*/
-(3000), (3001), (3002), (3003), (3004), (3005); /* ID_NOs for Flight Attendants*/
+(2000, 'Robert Johnson'), (2001, 'Olivia White'), (2002, 'William Turner'), (2003, 'Sophia Garcia'), (2004, 'Daniel Lee'), (2005, 'Ava Robinson'),/* ID_NOs for Pilots*/
+(3000, 'James Wilson'), (3001, 'Emma Martin'), (3002, 'Alexander Taylor'), (3003, 'Isabella Harris'), (3004, 'Liam Moore'), (3005, 'Mia Clark');/* ID_NOs for Flight Attendants*/
+
 
 
 DROP TABLE IF EXISTS ADMIN_STAFF;
 CREATE TABLE ADMIN_STAFF(
     ADMIN_ID            INT,
+    NAME				VARCHAR(50),
     PRIMARY KEY(ADMIN_ID),
     FOREIGN KEY(ADMIN_ID) REFERENCES EMPLOYEE(ID_NO)
 );
 
-INSERT INTO ADMIN_STAFF(ADMIN_ID)
+INSERT INTO ADMIN_STAFF(ADMIN_ID, NAME)
 VALUES
-(4000), (4001), (4002), (4003), (4004), (4005); 
+(4000, 'Matthew King'), (4001, 'Abigail Scott'), (4002, 'Ethan Adams'), (4003, 'Chloe Lewis'), (4004, 'Jackson Turner'), (4005, 'Lily Bennett');
 
 
 DROP TABLE IF EXISTS USERS;
