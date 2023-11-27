@@ -99,12 +99,13 @@ public class DatabaseConnection{
 
     public ArrayList<AirlineAgent> getAllAirlineAgents() {
         ArrayList<AirlineAgent> airlineAgents = new ArrayList<>();
-        String query = "SELECT AGENT_ID FROM AIRLINE_AGENT";
+        String query = "SELECT * FROM AIRLINE_AGENT";
 
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
                 int agentId = resultSet.getInt("AGENT_ID");
-                AirlineAgent airlineAgent = new AirlineAgent(agentId);
+                String name = resultSet.getString("NAME");
+                AirlineAgent airlineAgent = new AirlineAgent(agentId, name);
                 airlineAgents.add(airlineAgent);
             }
         } catch (SQLException e) {
@@ -131,14 +132,15 @@ public class DatabaseConnection{
         return pilots;
     }
     
-    public ArrayList<FlightAttendant> getAllFlightAttendants() {
-        ArrayList<FlightAttendant> flightAttendants = new ArrayList<>();
-        String query = "SELECT CREW_ID FROM CREW WHERE CREW_ID BETWEEN 3000 AND 3999";
+    public ArrayList<Crew> getAllFlightAttendants() {
+        ArrayList<Crew> flightAttendants = new ArrayList<>();
+        String query = "SELECT * FROM CREW WHERE CREW_ID BETWEEN 3000 AND 3999";
     
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
                 int crewId = resultSet.getInt("CREW_ID");
-                FlightAttendant flightAttendant = new FlightAttendant(crewId);
+                String name = resultSet.getString("NAME");
+                Crew flightAttendant = new Crew(crewId);
                 flightAttendants.add(flightAttendant);
             }
         } catch (SQLException e) {
@@ -150,12 +152,13 @@ public class DatabaseConnection{
 
     public ArrayList<SystemAdmin> getAllAdminStaff() {
         ArrayList<SystemAdmin> adminStaff = new ArrayList<>();
-        String query = "SELECT ADMIN_ID FROM ADMIN_STAFF";
+        String query = "SELECT * FROM ADMIN_STAFF";
 
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
                 int adminId = resultSet.getInt("ADMIN_ID");
-                SystemAdmin admin = new SystemAdmin(adminId);
+                String name = resultSet.getString("NAME");
+                SystemAdmin admin = new SystemAdmin(adminId, name);
                 adminStaff.add(admin);
             } 
         } catch (SQLException e) {

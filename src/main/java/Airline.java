@@ -8,7 +8,6 @@ public class Airline {
     private ArrayList<Crew> pilots;
     private ArrayList<SystemAdmin> systemAdmins;
     private BookingSystem bookingSystem;
-    private Planes planes;
     private ArrayList<Flight> flights;
     private ArrayList<Customers> customers;
 
@@ -45,21 +44,25 @@ public class Airline {
 
         for (FlightAttendant flightAttendant : flightAttendants) {
             System.out.println("Flight Attendant ID: " + flightAttendant.getIdNo());
+            System.out.println("Flight Attendant name: " + flightAttendant.getName());
             System.out.println("--------------------------------------");
         }
 
         for (AirlineAgent airlineAgent : airlineAgents) {
             System.out.println("Airline Agent ID: " + airlineAgent.getIdNo());
+            System.out.println("Airline Agent name: " + airlineAgent.getName());
             System.out.println("--------------------------------------");
         }
 
         for (Crew pilot : pilots) {
             System.out.println("Pilot ID: " + pilot.getIdNo());
+            System.out.println("Pilot name: " + pilot.getName());
             System.out.println("--------------------------------------");
         }
 
         for (SystemAdmin systemAdmin : systemAdmins) {
             System.out.println("System Admin ID: " + systemAdmin.getIdNo());
+            System.out.println("System Admin name: " + systemAdmin.getName());
             System.out.println("--------------------------------------");
         }
     }
