@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class AirlineAgent extends Employee{
     Booked book;
     Flight flight;
-    public AirlineAgent(int idNo) {        
-        super(idNo);
+    public AirlineAgent(int idNo, String name) {        
+        super(idNo, name);
     }
 
     public void createBooking(Booked booking){
