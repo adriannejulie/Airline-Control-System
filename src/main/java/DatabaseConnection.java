@@ -2,6 +2,7 @@
 package src.main.java;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
 Exports:
@@ -53,6 +54,29 @@ public class DatabaseConnection{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Flight> getAllFlights() {
+        ArrayList<Flight> flights = new ArrayList<>();
+        String query = "SELECT * FROM FLIGHT";
+
+        try (ResultSet resultSet = stmt.executeQuery(query)) {
+            while (resultSet.next()) {
+                int flightNumber = resultSet.getInt("FLIGHT_NUMBER");
+                String destination = resultSet.getString("DESTINATION");
+                String origin = resultSet.getString("ORIGIN");
+                String timeDeparture = resultSet.getString("TIME_DEPARTURE");
+                int aircraftType = resultSet.getInt("AIRCRAFT_TYPE");
+
+                Flight flight = new Flight(flightNumber, destination, origin, timeDeparture, aircraftType);
+
+                flights.add(flight);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return flights;
     }
     
 }
