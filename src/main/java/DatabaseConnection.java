@@ -4,17 +4,6 @@ package src.main.java;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
-Exports:
-- All Flight Data
-- All Employee Data
-- All Customer Data
-- All Plane Data
-- All Airport Data
-
-- Edit/Delete Versions of above
- */
-
 
 public class DatabaseConnection{ 
     private Statement stmt;
@@ -63,7 +52,7 @@ public class DatabaseConnection{
                 int flightNumber = resultSet.getInt("FLIGHT_NUMBER");
                 String destination = resultSet.getString("DESTINATION");
                 String origin = resultSet.getString("ORIGIN");
-                String timeDeparture = resultSet.getString("TIME_DEPARTURE");
+                Date timeDeparture = resultSet.getDate("TIME_DEPARTURE");
                 int aircraftType = resultSet.getInt("AIRCRAFT_TYPE");
 
                 Flight flight = new Flight(flightNumber, destination, origin, timeDeparture, aircraftType);
@@ -319,6 +308,37 @@ public class DatabaseConnection{
         return passengers;
     }
       
+
+    public void removeCrew(int id){
+
+    }
+
+    public void removeCustomer(int id){
+
+    }
+
+    public void removeAircraft(int id){
+
+    }
+
+    public void deleteFlight(int id){
+
+    }
+
+    public void addCrew(int id){
+
+    }
+
+    public void addAircraft(int id){
+
+    }
+
+    public void addFlight(int id){
+        
+    }
+
+
+
 
 }
 

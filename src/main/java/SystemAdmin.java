@@ -4,4 +4,8 @@ public class SystemAdmin extends Employee{
     public SystemAdmin(int idNo) {
         super(idNo);
     }
+
+    public void addFlights(){
+        
+    }
 }

@@ -129,9 +129,13 @@ public class Customers {
         databaseConnection.removeCustomerFlight(flight);
     }
 
-    public void ViewFlights(int id){
+    public void getFlights(int id){
         DatabaseConnection databaseConnection = new DatabaseConnection();
         this.flights = databaseConnection.viewBooked(id);
+    }
+
+    public ArrayList<Booked> viewFlights(){
+        return flights;
     }
 
 

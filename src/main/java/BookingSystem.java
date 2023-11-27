@@ -19,4 +19,4 @@ public class BookingSystem{
     public void getEmail(){}
 
     public void sendConfirmationEmail(){}
-}
+} //do we still need this?
