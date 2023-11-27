@@ -114,14 +114,14 @@ public class DatabaseConnection{
         return airlineAgents;
     }
 
-    public ArrayList<Pilot> getAllPilots() {
-        ArrayList<Pilot> pilots = new ArrayList<>();
+    public ArrayList<Crew> getAllPilots() {
+        ArrayList<Crew> pilots = new ArrayList<>();
         String query = "SELECT CREW_ID FROM CREW WHERE CREW_ID BETWEEN 2000 AND 2999";
     
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
                 int crewId = resultSet.getInt("CREW_ID");
-                Pilot pilot = new Pilot(crewId);
+                Crew pilot = new Crew(crewId);
                 pilots.add(pilot);
             }
         } catch (SQLException e) {

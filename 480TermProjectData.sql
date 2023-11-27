@@ -8,27 +8,28 @@ ALTER USER 'root'@'127.0.0.1' IDENTIFIED BY 'password';
 DROP TABLE IF EXISTS EMPLOYEE;
 CREATE TABLE EMPLOYEE(
     ID_NO               INT,
+    PASSWORD			VARCHAR(30),
     PRIMARY KEY(ID_NO)
 ); 
 
 INSERT INTO EMPLOYEE(ID_NO)
 VALUE
-(1000), (1001), (1002), (1003), (1004), (1005), /* ID_NOs for Airline Agents*/
-(2000), (2001), (2002), (2003), (2004), (2005), /* ID_NOs for Pilots*/
+(1000, 'agent'), (1001, 'agent'), (1002, 'agent'), (1003, 'agent'), (1004, 'agent'), (1005, 'agent'), /* ID_NOs for Airline Agents*/
+(2000, 'crew'), (2001, 'crew'), (2002, 'crew'), (2003, 'crew'), (2004, 'crew'), (2005, 'crew'), /* ID_NOs for Pilots*/
 
-(3000), (3001), (3002), (3003), (3004), /* ID_NOs for Flight Attendants*/
-(3005), (3006), (3007), (3008), (3009), /* ID_NOs for Flight Attendants*/
-(3010), (3011), (3012), (3013), (3014), /* ID_NOs for Flight Attendants*/
+(3000, 'crew'), (3001, 'crew'), (3002, 'crew'), (3003, 'crew'), (3004, 'crew'), /* ID_NOs for Flight Attendants*/
+(3005, 'crew'), (3006, 'crew'), (3007, 'crew'), (3008, 'crew'), (3009, 'crew'), /* ID_NOs for Flight Attendants*/
+(3010, 'crew'), (3011, 'crew'), (3012, 'crew'), (3013, 'crew'), (3014, 'crew'), /* ID_NOs for Flight Attendants*/
 
-(3015), (3016), (3017), (3018), (3019), /* ID_NOs for Flight Attendants*/
-(3020), (3021), (3022), (3023), (3024), /* ID_NOs for Flight Attendants*/
-(3025), (3026), (3027), (3028), (3029), /* ID_NOs for Flight Attendants*/
+(3015, 'crew'), (3016, 'crew'), (3017, 'crew'), (3018, 'crew'), (3019, 'crew'), /* ID_NOs for Flight Attendants*/
+(3020, 'crew'), (3021, 'crew'), (3022, 'crew'), (3023, 'crew'), (3024, 'crew'), /* ID_NOs for Flight Attendants*/
+(3025, 'crew'), (3026, 'crew'), (3027, 'crew'), (3028, 'crew'), (3029, 'crew'), /* ID_NOs for Flight Attendants*/
 
-(3030), (3031), (3032), (3033), (3034), /* ID_NOs for Flight Attendants*/
-(3035), (3036), (3037), (3038), (3039), /* ID_NOs for Flight Attendants*/
-(3040), (3041), (3042), (3043), (3044), /* ID_NOs for Flight Attendants*/
+(3030, 'crew'), (3031, 'crew'), (3032, 'crew'), (3033, 'crew'), (3034, 'crew'), /* ID_NOs for Flight Attendants*/
+(3035, 'crew'), (3036, 'crew'), (3037, 'crew'), (3038, 'crew'), (3039, 'crew'), /* ID_NOs for Flight Attendants*/
+(3040, 'crew'), (3041, 'crew'), (3042, 'crew'), (3043, 'crew'), (3044, 'crew'), /* ID_NOs for Flight Attendants*/
 
-(4000), (4001), (4002), (4003), (4004), (4005); /* ID_NOs for System Admins*/
+(4000, 'admin'), (4001, 'admin'), (4002, 'admin'), (4003, 'admin'), (4004, 'admin'), (4005, 'admin'); /* ID_NOs for System Admins*/
 
 DROP TABLE IF EXISTS AIRCRAFT;
 CREATE TABLE AIRCRAFT(

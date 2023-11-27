@@ -5,7 +5,7 @@ public class Airline {
     private String name;
     private ArrayList<FlightAttendant> flightAttendants;
     private ArrayList<AirlineAgent> airlineAgents;
-    private ArrayList<Pilot> pilots;
+    private ArrayList<Crew> pilots;
     private ArrayList<SystemAdmin> systemAdmins;
     private BookingSystem bookingSystem;
     private Planes planes;
@@ -53,7 +53,7 @@ public class Airline {
             System.out.println("--------------------------------------");
         }
 
-        for (Pilot pilot : pilots) {
+        for (Crew pilot : pilots) {
             System.out.println("Pilot ID: " + pilot.getIdNo());
             System.out.println("--------------------------------------");
         }
