@@ -1,5 +1,7 @@
 package src.main.java;
 
-public class FlightAttendant{
-    
+public class FlightAttendant extends Employee{
+    public FlightAttendant(int idNo) {
+        super(idNo);
+    }
 }

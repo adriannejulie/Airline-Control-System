@@ -1,5 +1,7 @@
 package src.main.java;
 
-public class Pilot{
-    
+public class Pilot extends Employee{
+    public Pilot(int idNo) {
+        super(idNo);
+    }
 }
