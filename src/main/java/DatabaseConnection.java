@@ -33,7 +33,7 @@ public class DatabaseConnection{
                 ex.printStackTrace();
             }
     }
-    
+
     public void queryString() {
         String strSelect = "SELECT ID_NO FROM USERS";
         System.out.println("The SQL query: " + strSelect + "\n");
@@ -79,7 +79,7 @@ public class DatabaseConnection{
 
     public ArrayList<Customers> getAllCustomers() {
         ArrayList<Customers> customers = new ArrayList<>();
-        String query = "SELECT * FROM USERS";
+        String query = "SELECT * FROM USERS" ;
     
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
@@ -92,16 +92,12 @@ public class DatabaseConnection{
                 String phoneNumber = resultSet.getString("PHONE_NUMBER");
                 String cardNumber = resultSet.getString("CARD_NUMBER");
                 String email = resultSet.getString("EMAIL");
-                int flightNumber = resultSet.getInt("FLIGHT_NUMBER");
-                String seatType = resultSet.getString("SEAT_TYPE");
-                int seatNumber = resultSet.getInt("SEAT_NUMBER");
                 int membershipId = resultSet.getInt("MEMBERSHIP_ID");
-                int insuranceStatus = resultSet.getInt("INSURANCE_STATUS");
 
                 Customers customer = new Customers(
                         idNo, username, password, name, birth, phoneNumber,
-                        cardNumber, email, flightNumber, seatType, seatNumber,
-                        membershipId, insuranceStatus
+                        cardNumber, email,
+                        membershipId
                 );
                 customers.add(customer);
             }
@@ -172,13 +168,157 @@ public class DatabaseConnection{
                 int adminId = resultSet.getInt("ADMIN_ID");
                 SystemAdmin admin = new SystemAdmin(adminId);
                 adminStaff.add(admin);
-            }
+            } 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return adminStaff;
     }
+
+    public Customers getCustomer(String user){
+        String query = "SELECT * FROM USERS WHERE USERNAME = " + user;
+        try (ResultSet resultSet = stmt.executeQuery(query)) {
+            while (resultSet.next()) {
+                // Retrieve customer data from the result set
+                int idNo = resultSet.getInt("ID_NO");
+                String userlogin = resultSet.getString("USERNAME");
+                String password = resultSet.getString("PASSWORD");
+                String name = resultSet.getString("NAME");
+                String birth = resultSet.getString("BIRTH");
+                String phoneNumber = resultSet.getString("PHONE_NUMBER");
+                String cardNumber = resultSet.getString("CARD_NUMBER");
+                String email = resultSet.getString("EMAIL");
+                int membershipId = resultSet.getInt("MEMBERSHIP_ID");
+
+                Customers customer = new Customers(
+                        idNo, userlogin, password, name, birth, phoneNumber,
+                        cardNumber, email,
+                        membershipId
+                );
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new Customers();
+    }
+
+    public void addUsers(String username, String password, String name, Date birth, String phone, String card, String email, int membership){
+        String query = "INSERT INTO USERS VALUES ((SELECT MAX(ID_NO) + 1 FROM USERS)" + "," + username + "," + password + "," + name + "," + birth + "," + phone + "," + card + "," + email + "," + membership + ")";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
+    public void addCustomerFlight(Booked flight){
+        String query = "INSERT INTO BOOKED VALUES (" + flight.getID()+ ", " + flight.getNumber() + ", " + flight.getSeatType() + ", " + flight.getSeatNumber() + "," + flight.getInsurance() + ")";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeCustomerFlight(Booked flight){
+        String query = "DELETE FROM BOOKED VALUES (" + flight.getID()+ ", " + flight.getNumber() + ", " + flight.getSeatType() + ", " + flight.getSeatNumber() + "," + flight.getInsurance() + ")";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addMembership(int id){
+        String strUpdate = "UPDATE USER SET MEMBERSHP_ID = (SELECT MAX(MEMBERSHIP_ID) + 1 FROM USERS) WHERE ID_NO = " + id;
+         System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
+         try {
+            stmt.executeUpdate(strUpdate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeMembership (int id){
+        String strUpdate = "UPDATE USER SET MEMBERSHP_ID = 0000 WHERE ID_NO = " + id;
+        System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
+        try {
+           stmt.executeUpdate(strUpdate);
+       } catch (SQLException e) {
+           e.printStackTrace();
+       } 
+    }
+
+    public void changePaymentInfo(int id, String cardNumber){
+        String strUpdate = "UPDATE USER SET CARD_NUMBER =" + cardNumber + " WHERE ID_NO = " + id;
+        System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
+        try {
+           stmt.executeUpdate(strUpdate);
+       } catch (SQLException e) {
+           e.printStackTrace();
+       } 
+    }
+
+    public ArrayList<Booked> viewBooked(int id){
+        ArrayList<Booked> bookings = new ArrayList<>();
+
+        String query = "SELECT * FROM BOOKED WHERE USER_ID = " + id;
+        try (ResultSet resultSet = stmt.executeQuery(query)) {
+            while (resultSet.next()) {
+                // Retrieve customer data from the result set
+                int idNo = resultSet.getInt("USER_NO");
+                int flightNumber = resultSet.getInt("FLIGHT_NUMBER");
+                String seatType = resultSet.getString("SEAT_TYPE");
+                int seatNumber = resultSet.getInt("SEAT_NUMBER");
+                int insuranceStatus = resultSet.getInt("INSURANCE_STATUS");
+       
+                Booked booking = new Booked(
+                        idNo, flightNumber, seatType, seatNumber, insuranceStatus
+                );
+                bookings.add(booking);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    public ArrayList<Customers> viewPassengers(int flightNumber){
+        ArrayList<Customers> passengers = new ArrayList<>();
+
+        String query = "SELECT * FROM USERS WHERE FLIGHT_NUMBER = " + flightNumber;
+        try (ResultSet resultSet = stmt.executeQuery(query)) {
+            while (resultSet.next()) {
+                // Retrieve customer data from the result set
+                int idNo = resultSet.getInt("ID_NO");
+                String userlogin = resultSet.getString("USERNAME");
+                String password = resultSet.getString("PASSWORD");
+                String name = resultSet.getString("NAME");
+                String birth = resultSet.getString("BIRTH");
+                String phoneNumber = resultSet.getString("PHONE_NUMBER");
+                String cardNumber = resultSet.getString("CARD_NUMBER");
+                String email = resultSet.getString("EMAIL");
+                int membershipId = resultSet.getInt("MEMBERSHIP_ID");
+
+                Customers customer = new Customers(
+                        idNo, userlogin, password, name, birth, phoneNumber,
+                        cardNumber, email,
+                        membershipId
+                );
+                passengers.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return passengers;
+    }
+      
+
 }
 

@@ -38,11 +38,8 @@ public class Airline {
             System.out.println("Phone Number: " + customer.getPhoneNumber());
             System.out.println("Card Number: " + customer.getCardNumber());
             System.out.println("Email: " + customer.getEmail());
-            System.out.println("Flight Number: " + customer.getFlightNumber());
-            System.out.println("Seat Type: " + customer.getSeatType());
-            System.out.println("Seat Number: " + customer.getSeatNumber());
+
             System.out.println("Membership ID: " + customer.getMembershipId());
-            System.out.println("Insurance Status: " + customer.getInsuranceStatus());
             System.out.println("--------------------------------------");
         }
 

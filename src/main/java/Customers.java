@@ -1,5 +1,8 @@
 package src.main.java;
 
+import java.sql.Date;
+import java.util.ArrayList;
+
 public class Customers {
     private int idNo;
     private String username;
@@ -9,13 +12,10 @@ public class Customers {
     private String phoneNumber;
     private String cardNumber;
     private String email;
-    private int flightNumber;
-    private String seatType;
-    private int seatNumber;
-    private int membershipId;
-    private int insuranceStatus;
+    private int membershipId = 0;
+    private ArrayList<Booked> flights;
 
-    public Customers(int idNo, String username, String password, String name, String birth, String phoneNumber, String cardNumber, String email, int flightNumber, String seatType, int seatNumber, int membershipId, int insuranceStatus) {
+    public Customers(int idNo, String username, String password, String name, String birth, String phoneNumber, String cardNumber, String email, int membershipId){
         this.idNo = idNo;
         this.username = username;
         this.password = password;
@@ -24,11 +24,19 @@ public class Customers {
         this.phoneNumber = phoneNumber;
         this.cardNumber = cardNumber;
         this.email = email;
-        this.flightNumber = flightNumber;
-        this.seatType = seatType;
-        this.seatNumber = seatNumber;
         this.membershipId = membershipId;
-        this.insuranceStatus = insuranceStatus;
+    }
+
+    public Customers(){
+        this.idNo = 0;
+        this.username = null;
+        this.password = null;
+        this.name = null;
+        this.birth = null;
+        this.phoneNumber = null;
+        this.cardNumber = null;
+        this.email = null;
+        this.membershipId = 0;
     }
 
     public int getIdNo() {
@@ -95,29 +103,6 @@ public class Customers {
         this.email = email;
     }
 
-    public int getFlightNumber() {
-        return flightNumber;
-    }
-
-    public void setFlightNumber(int flightNumber) {
-        this.flightNumber = flightNumber;
-    }
-
-    public String getSeatType() {
-        return seatType;
-    }
-
-    public void setSeatType(String seatType) {
-        this.seatType = seatType;
-    }
-
-    public int getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(int seatNumber) {
-        this.seatNumber = seatNumber;
-    }
 
     public int getMembershipId() {
         return membershipId;
@@ -127,17 +112,28 @@ public class Customers {
         this.membershipId = membershipId;
     }
 
-    public int getInsuranceStatus() {
-        return insuranceStatus;
+    public void createAccount(String username, String password, String name, Date birth, String phone, String card, String email, int membership){
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.addUsers(username, password, name, birth, phone, card, email, membership);
     }
 
-    public void setInsuranceStatus(int insuranceStatus) {
-        this.insuranceStatus = insuranceStatus;
+    public void BookFlight(Booked flight){
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.addCustomerFlight(flight);
+        //send email - bonus?
+
     }
 
-    public void BookFlight(){}
+    public void CancelFlight( Booked flight){
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.removeCustomerFlight(flight);
+    }
 
-    public void CancelFlight(){}
+    public void ViewFlights(int id){
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        this.flights = databaseConnection.viewBooked(id);
+    }
 
-    public void ViewFlights(){}
+
+
 }
