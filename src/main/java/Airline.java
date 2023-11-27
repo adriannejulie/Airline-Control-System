@@ -3,11 +3,10 @@ import java.util.*;
 
 public class Airline {
     private String name;
-    private ArrayList<FlightAttendant> flightAttendants;
+    private ArrayList<Crew> flightAttendants;
     private ArrayList<AirlineAgent> airlineAgents;
     private ArrayList<Crew> pilots;
     private ArrayList<SystemAdmin> systemAdmins;
-    private BookingSystem bookingSystem;
     private ArrayList<Flight> flights;
     private ArrayList<Customers> customers;
 
@@ -42,7 +41,7 @@ public class Airline {
             System.out.println("--------------------------------------");
         }
 
-        for (FlightAttendant flightAttendant : flightAttendants) {
+        for (Crew flightAttendant : flightAttendants) {
             System.out.println("Flight Attendant ID: " + flightAttendant.getIdNo());
             System.out.println("Flight Attendant name: " + flightAttendant.getName());
             System.out.println("--------------------------------------");

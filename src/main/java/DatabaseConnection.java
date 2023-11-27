@@ -117,12 +117,13 @@ public class DatabaseConnection{
 
     public ArrayList<Crew> getAllPilots() {
         ArrayList<Crew> pilots = new ArrayList<>();
-        String query = "SELECT CREW_ID FROM CREW WHERE CREW_ID BETWEEN 2000 AND 2999";
+        String query = "SELECT * FROM CREW WHERE CREW_ID BETWEEN 2000 AND 2999";
     
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
                 int crewId = resultSet.getInt("CREW_ID");
-                Crew pilot = new Crew(crewId);
+                String name = resultSet.getString("NAME");
+                Crew pilot = new Crew(crewId, name);
                 pilots.add(pilot);
             }
         } catch (SQLException e) {
@@ -140,7 +141,7 @@ public class DatabaseConnection{
             while (resultSet.next()) {
                 int crewId = resultSet.getInt("CREW_ID");
                 String name = resultSet.getString("NAME");
-                Crew flightAttendant = new Crew(crewId);
+                Crew flightAttendant = new Crew(crewId, name);
                 flightAttendants.add(flightAttendant);
             }
         } catch (SQLException e) {
