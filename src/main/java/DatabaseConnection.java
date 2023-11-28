@@ -23,26 +23,6 @@ public class DatabaseConnection{
             }
     }
 
-    public void queryString() {
-        String strSelect = "SELECT ID_NO FROM USERS";
-        System.out.println("The SQL query: " + strSelect + "\n");
-    
-        try (ResultSet rset = stmt.executeQuery(strSelect)) {
-            System.out.println("The records selected are:");
-            int rowCount = 0;
-    
-            while (rset.next()) {
-                String idNumber = rset.getString("ID_NO");
-                System.out.println(idNumber);
-                ++rowCount;
-            }
-    
-            System.out.println("Total number of records = " + rowCount);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<Flight> getAllFlights() {
         ArrayList<Flight> flights = new ArrayList<>();
         String query = "SELECT * FROM FLIGHT";
@@ -50,12 +30,17 @@ public class DatabaseConnection{
         try (ResultSet resultSet = stmt.executeQuery(query)) {
             while (resultSet.next()) {
                 int flightNumber = resultSet.getInt("FLIGHT_NUMBER");
-                String destination = resultSet.getString("DESTINATION");
                 String origin = resultSet.getString("ORIGIN");
+                String destination = resultSet.getString("DESTINATION");
                 Date timeDeparture = resultSet.getDate("TIME_DEPARTURE");
                 int aircraftType = resultSet.getInt("AIRCRAFT_TYPE");
+                int pilotId = resultSet.getInt("PILOT1");
+                int flightAttendant1Id = resultSet.getInt("FLIGHT_ATTENDANT1");
+                int flightAttendant2Id = resultSet.getInt("FLIGHT_ATTENDANT2");
+                int flightAttendant3Id = resultSet.getInt("FLIGHT_ATTENDANT3");
+                int flightAttendant4Id = resultSet.getInt("FLIGHT_ATTENDANT4");
 
-                Flight flight = new Flight(flightNumber, destination, origin, timeDeparture, aircraftType);
+                Flight flight = new Flight(flightNumber, origin, destination, timeDeparture, aircraftType, pilotId, flightAttendant1Id, flightAttendant2Id, flightAttendant3Id, flightAttendant4Id);
 
                 flights.add(flight);
             }
@@ -169,6 +154,22 @@ public class DatabaseConnection{
         return adminStaff;
     }
 
+    public ArrayList<Integer> getAllAircraftIds() {
+        ArrayList<Integer> aircraftIds = new ArrayList<>();
+        String query = "SELECT AIRCRAFT_ID FROM AIRCRAFT";
+    
+        try (ResultSet resultSet = stmt.executeQuery(query)) {
+            while (resultSet.next()) {
+                int aircraftId = resultSet.getInt("AIRCRAFT_ID");
+                aircraftIds.add(aircraftId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return aircraftIds;
+    }    
+
     public Customers getCustomer(String user){
         String query = "SELECT * FROM USERS WHERE USERNAME = " + user;
         try (ResultSet resultSet = stmt.executeQuery(query)) {
@@ -195,56 +196,6 @@ public class DatabaseConnection{
             e.printStackTrace();
         }
         return new Customers();
-    }
-
-    public void addUsers(String username, String password, String name, Date birth, String phone, String card, String email, int membership){
-        String query = "INSERT INTO USERS VALUES ((SELECT MAX(ID_NO) + 1 FROM USERS)" + "," + username + "," + password + "," + name + "," + birth + "," + phone + "," + card + "," + email + "," + membership + ")";
-        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
-        try {
-            stmt.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void addCustomerFlight(Booked flight){
-        String query = "INSERT INTO BOOKED VALUES (" + flight.getID()+ ", " + flight.getNumber() + ", " + flight.getSeatType() + ", " + flight.getSeatNumber() + "," + flight.getInsurance() + ")";
-        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
-        try {
-            stmt.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void removeCustomerFlight(Booked flight){
-        String query = "DELETE FROM BOOKED VALUES (" + flight.getID()+ ", " + flight.getNumber() + ", " + flight.getSeatType() + ", " + flight.getSeatNumber() + "," + flight.getInsurance() + ")";
-        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
-        try {
-            stmt.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addMembership(int id){
-        String strUpdate = "UPDATE USER SET MEMBERSHP_ID = (SELECT MAX(MEMBERSHIP_ID) + 1 FROM USERS) WHERE ID_NO = " + id;
-         System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
-         try {
-            stmt.executeUpdate(strUpdate);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void removeMembership (int id){
-        String strUpdate = "UPDATE USER SET MEMBERSHP_ID = 0000 WHERE ID_NO = " + id;
-        System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
-        try {
-           stmt.executeUpdate(strUpdate);
-       } catch (SQLException e) {
-           e.printStackTrace();
-       } 
     }
 
     public void changePaymentInfo(int id, String cardNumber){
@@ -311,38 +262,127 @@ public class DatabaseConnection{
         }
         return passengers;
     }
+
+    public void addUsers(String username, String password, String name, Date birth, String phone, String card, String email, int membership){
+        String query = "INSERT INTO USERS VALUES ((SELECT MAX(ID_NO) + 1 FROM USERS)" + "," + username + "," + password + "," + name + "," + birth + "," + phone + "," + card + "," + email + "," + membership + ")";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeCustomer(int id) {
+        String query = "DELETE FROM USERS WHERE ID_NO = " + id;
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }  
+    
+    public void addCustomerFlight(Booked flight){
+        String query = "INSERT INTO BOOKED VALUES (" + flight.getID()+ ", " + flight.getNumber() + ", " + flight.getSeatType() + ", " + flight.getSeatNumber() + "," + flight.getInsurance() + ")";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeCustomerFlight(Booked flight){
+        String query = "DELETE FROM BOOKED VALUES (" + flight.getID()+ ", " + flight.getNumber() + ", " + flight.getSeatType() + ", " + flight.getSeatNumber() + "," + flight.getInsurance() + ")";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addMembership(int id){
+        String strUpdate = "UPDATE USER SET MEMBERSHP_ID = (SELECT MAX(MEMBERSHIP_ID) + 1 FROM USERS) WHERE ID_NO = " + id;
+         System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
+         try {
+            stmt.executeUpdate(strUpdate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeMembership (int id){
+        String strUpdate = "UPDATE USER SET MEMBERSHP_ID = 0000 WHERE ID_NO = " + id;
+        System.out.println("The SQL statement is: " + strUpdate + "\n");  // Echo for debugging
+        try {
+           stmt.executeUpdate(strUpdate);
+       } catch (SQLException e) {
+           e.printStackTrace();
+       } 
+    }
       
+    public void addCrew(int id, String name){
+        String query = "INSERT INTO CREW VALUES (" + id + ", '" + name + "')";
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void removeCrew(int id){
-
+        String query = "DELETE FROM CREW WHERE CREW_ID = " + id;
+        System.out.println("The SQL statement is: " + query + "\n");  // Echo for debugging
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } 
+    
+    public void addAircraft(int aircraftId) {
+        String query = "INSERT INTO AIRCRAFT VALUES (" + aircraftId + ")";
+        System.out.println("The SQL statement is: " + query + "\n");
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void removeCustomer(int id){
-
+    public void removeAircraft(int aircraftId) {
+        String query = "DELETE FROM AIRCRAFT WHERE AIRCRAFT_ID = " + aircraftId;
+        System.out.println("The SQL statement is: " + query + "\n");
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void removeAircraft(int id){
-
+    public void addFlight(int flightNumber, String origin, String destination, Date timeDeparture, int aircraftType, int pilot1, int flightAttendant1, int flightAttendant2, int flightAttendant3, int flightAttendant4) {
+        String query = "INSERT INTO FLIGHT VALUES (" + flightNumber + ", '" + origin + "', '" + destination + "', '"
+                + timeDeparture + "', " + aircraftType + ", " + pilot1 + ", " + flightAttendant1 + ", " + flightAttendant2
+                + ", " + flightAttendant3 + ", " + flightAttendant4 + ")";
+        System.out.println("The SQL statement is: " + query + "\n");
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void deleteFlight(int id){
-
+    public void deleteFlight(int flightNumber) {
+        String query = "DELETE FROM FLIGHT WHERE FLIGHT_NUMBER = " + flightNumber;
+        System.out.println("The SQL statement is: " + query + "\n");
+        try {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void addCrew(int id){
-
-    }
-
-    public void addAircraft(int id){
-
-    }
-
-    public void addFlight(int id){
-        
-    }
-
-
-
-
 }
 
