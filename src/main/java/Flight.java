@@ -8,8 +8,14 @@ public class Flight{
     private String origin;
     private Date timeDeparture;
     private int aircraftType;
+    private int business;
+    private int comfort;
+    private int ordinary;
 
     public Flight(int flightNumber, String destination, String origin, Date timeDeparture, int aircraftType) {
+        business = 10;
+        comfort = 15;
+        ordinary = 55;
         this.flightNumber = flightNumber;
         this.destination = destination;
         this.origin = origin;

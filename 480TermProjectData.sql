@@ -12,10 +12,11 @@ CREATE TABLE EMPLOYEE(
     PRIMARY KEY(ID_NO)
 ); 
 
-INSERT INTO EMPLOYEE(ID_NO)
+INSERT INTO EMPLOYEE(ID_NO, PASSWORD)
 VALUE
 (1000, 'agent'), (1001, 'agent'), (1002, 'agent'), (1003, 'agent'), (1004, 'agent'), (1005, 'agent'), /* ID_NOs for Airline Agents*/
 (2000, 'crew'), (2001, 'crew'), (2002, 'crew'), (2003, 'crew'), (2004, 'crew'), (2005, 'crew'), /* ID_NOs for Pilots*/
+(2006, 'crew'), (2007, 'crew'), (2008, 'crew'), (2009, 'crew'), (2010, 'crew'), (2011, 'crew'), /* ID_NOs for Pilots*/
 
 (3000, 'crew'), (3001, 'crew'), (3002, 'crew'), (3003, 'crew'), (3004, 'crew'), /* ID_NOs for Flight Attendants*/
 (3005, 'crew'), (3006, 'crew'), (3007, 'crew'), (3008, 'crew'), (3009, 'crew'), /* ID_NOs for Flight Attendants*/
@@ -68,7 +69,6 @@ CREATE TABLE FLIGHT(
     TIME_DEPARTURE      DATETIME,
     AIRCRAFT_TYPE       INT,
     PILOT1              INT,
-    PILOT2              INT,
     FLIGHT_ATTENDANT1   INT,
     FLIGHT_ATTENDANT2   INT,
     FLIGHT_ATTENDANT3   INT,
@@ -78,44 +78,43 @@ CREATE TABLE FLIGHT(
     FOREIGN KEY(AIRCRAFT_TYPE) REFERENCES AIRCRAFT(AIRCFRAFT_ID),
     FOREIGN KEY(DESTINATION) REFERENCES AIRPORT(AIRPORT_CODE),
     FOREIGN KEY(PILOT1) REFERENCES EMPLOYEE(ID_NO),
-    FOREIGN KEY(PILOT2) REFERENCES EMPLOYEE(ID_NO),
     FOREIGN KEY(FLIGHT_ATTENDANT1) REFERENCES EMPLOYEE(ID_NO),
     FOREIGN KEY(FLIGHT_ATTENDANT2) REFERENCES EMPLOYEE(ID_NO),
     FOREIGN KEY(FLIGHT_ATTENDANT3) REFERENCES EMPLOYEE(ID_NO),
     FOREIGN KEY(FLIGHT_ATTENDANT4) REFERENCES EMPLOYEE(ID_NO)
 );
 
-INSERT INTO FLIGHT(FLIGHT_NUMBER, DESTINATION, ORIGIN, TIME_DEPARTURE, AIRCRAFT_TYPE)
+INSERT INTO FLIGHT(FLIGHT_NUMBER, DESTINATION, ORIGIN, TIME_DEPARTURE, AIRCRAFT_TYPE, PILOT1, FLIGHT_ATTENDANT1, FLIGHT_ATTENDANT2, FLIGHT_ATTENDANT3, FLIGHT_ATTENDANT4)
 VALUES
-(01, 'CYYZ','CYVR','2023-12-20 00:00:05', 01), /*Flights from Toronto to Vancouver*/
-(02, 'CYYZ','CYVR','2023-12-20 12:00:05', 02),
-(03, 'CYYZ','CYVR','2023-12-23 00:00:05', 03),
-(04, 'CYYZ','CYVR','2023-12-23 12:00:05', 04),
+(01, 'CYYZ','CYVR','2023-12-20 00:00:05', 01, 2000, 3000, 3001, 3002, 3003), /*Flights from Toronto to Vancouver*/
+(02, 'CYYZ','CYVR','2023-12-20 12:00:05', 02, 2001, 3004, 3005, 3006, 3007),
+(03, 'CYYZ','CYVR','2023-12-23 00:00:05', 03, 2002, 3008, 3009, 3010, 3011),
+(04, 'CYYZ','CYVR','2023-12-23 12:00:05', 04, 2003, 3012, 3013, 3014, 3015),
 
-(05, 'CYUL','CYYC','2023-12-25 00:00:05', 05), /*Flights from Montreal to Calgary*/
-(06, 'CYUL','CYYC','2023-12-25 12:00:05', 06),
-(07, 'CYUL','CYYC','2023-12-27 00:00:05', 07),
-(08, 'CYUL','CYYC','2023-12-27 12:00:05', 08),
+(05, 'CYUL','CYYC','2023-12-25 00:00:05', 05, 2000, 3000, 3001, 3002, 3003), /*Flights from Montreal to Calgary*/
+(06, 'CYUL','CYYC','2023-12-25 12:00:05', 06, 2001, 3004, 3005, 3006, 3007),
+(07, 'CYUL','CYYC','2023-12-27 00:00:05', 07, 2002, 3008, 3009, 3010, 3011),
+(08, 'CYUL','CYYC','2023-12-27 12:00:05', 08, 2003, 3012, 3013, 3014, 3015),
 
-(09, 'CYOW','CYTZ','2023-12-29 00:00:05', 09), /*Flights from Ottowa to Toronto*/
-(10, 'CYOW','CYTZ','2023-12-29 12:00:05', 10),
-(11, 'CYOW','CYTZ','2023-12-31 00:00:05', 11),
-(12, 'CYOW','CYTZ','2023-12-31 12:00:05', 12),
+(09, 'CYOW','CYTZ','2023-12-29 00:00:05', 09, 2000, 3000, 3001, 3002, 3003), /*Flights from Ottowa to Toronto*/
+(10, 'CYOW','CYTZ','2023-12-29 12:00:05', 10, 2001, 3004, 3005, 3006, 3007),
+(11, 'CYOW','CYTZ','2023-12-31 00:00:05', 11, 2002, 3008, 3009, 3010, 3011),
+(12, 'CYOW','CYTZ','2023-12-31 12:00:05', 12, 2003, 3012, 3013, 3014, 3015),
 
-(13, 'CYEG','CYWG','2023-12-20 00:00:05', 13), /*Flights from Edmonton to Winnepeg*/
-(14, 'CYEG','CYWG','2023-12-20 12:00:05', 14),
-(15, 'CYEG','CYWG','2023-12-23 00:00:05', 15),
-(16, 'CYEG','CYWG','2023-12-23 12:00:05', 16),
+(13, 'CYEG','CYWG','2023-12-20 00:00:05', 13, 2004, 3016, 3017, 3018, 3019), /*Flights from Edmonton to Winnepeg*/
+(14, 'CYEG','CYWG','2023-12-20 12:00:05', 14, 2005, 3020, 3021, 3022, 3023),
+(15, 'CYEG','CYWG','2023-12-23 00:00:05', 15, 2006, 3024, 3025, 3026, 3027),
+(16, 'CYEG','CYWG','2023-12-23 12:00:05', 16, 2007, 3028, 3029, 3030, 3031),
 
-(17, 'CYYZ','CYYC','2023-12-25 00:00:05', 17), /*Flights from Toronto to Calgary*/
-(18, 'CYYZ','CYYC','2023-12-25 12:00:05', 18),
-(19, 'CYYZ','CYYC','2023-12-27 00:00:05', 19),
-(20, 'CYYZ','CYYC','2023-12-27 12:00:05', 20),
+(17, 'CYYZ','CYYC','2023-12-25 00:00:05', 17, 2004, 3016, 3017, 3018, 3019), /*Flights from Toronto to Calgary*/
+(18, 'CYYZ','CYYC','2023-12-25 12:00:05', 18, 2005, 3020, 3021, 3022, 3023),
+(19, 'CYYZ','CYYC','2023-12-27 00:00:05', 19, 2006, 3024, 3025, 3026, 3027),
+(20, 'CYYZ','CYYC','2023-12-27 12:00:05', 20, 2007, 3028, 3029, 3030, 3031),
 
-(21, 'CYYC','CYVR','2023-12-29 00:00:05', 21), /*Flights from Calgary to Vancouver*/
-(22, 'CYYC','CYVR','2023-12-29 12:00:05', 22),
-(23, 'CYYC','CYVR','2023-12-31 00:00:05', 23),
-(24, 'CYYC','CYVR','2023-12-31 12:00:05', 24);
+(21, 'CYYC','CYVR','2023-12-29 00:00:05', 21, 2004, 3016, 3017, 3018, 3019), /*Flights from Calgary to Vancouver*/
+(22, 'CYYC','CYVR','2023-12-29 12:00:05', 22, 2005, 3020, 3021, 3022, 3023),
+(23, 'CYYC','CYVR','2023-12-31 00:00:05', 23, 2006, 3024, 3025, 3026, 3027),
+(24, 'CYYC','CYVR','2023-12-31 12:00:05', 24, 2007, 3028, 3029, 3030, 3031);
 
 
 DROP TABLE  IF EXISTS AIRLINE_AGENT;
@@ -141,8 +140,20 @@ CREATE TABLE CREW(
 
 INSERT INTO CREW(CREW_ID, NAME)
 VALUES
-(2000, 'Robert Johnson'), (2001, 'Olivia White'), (2002, 'William Turner'), (2003, 'Sophia Garcia'), (2004, 'Daniel Lee'), (2005, 'Ava Robinson'),/* ID_NOs for Pilots*/
-(3000, 'James Wilson'), (3001, 'Emma Martin'), (3002, 'Alexander Taylor'), (3003, 'Isabella Harris'), (3004, 'Liam Moore'), (3005, 'Mia Clark');/* ID_NOs for Flight Attendants*/
+(2000, 'John Smith'), (2001, 'Emily Johnson'), (2002, 'Michael Davis'), (2003, 'Sarah Wilson'), (2004, 'Christopher Taylor'), (2005, 'Jessica Brown'), /* ID_NOs for Pilots*/
+(2006, 'David Miller'), (2007, 'Amanda Garcia'), (2008, 'Brian Robinson'), (2009, 'Megan Martinez'), (2010, 'Matthew Anderson'), (2011, 'Olivia Hernandez'), /* ID_NOs for Pilots*/
+
+(3000, 'Daniel White'), (3001, 'Lauren Moore'), (3002, 'Kevin Carter'), (3003, 'Ashley Clark'), (3004, 'Jonathan Hall'), /* ID_NOs for Flight Attendants*/
+(3005, 'Jennifer Lee'), (3006, 'Ryan Rodriguez'), (3007, 'Stephanie Turner'), (3008, 'Brandon Mitchell'), (3009, 'Taylor Adams'), /* ID_NOs for Flight Attendants*/
+(3010, 'Nicole Lewis'), (3011, 'Jacob Scott'), (3012, 'Kayla King'), (3013, 'Tyler Wright'), (3014, 'Haley Hill'), /* ID_NOs for Flight Attendants*/
+
+(3015, 'Cameron Baker'), (3016, 'Lily Nelson'), (3017, 'Jordan Walker'), (3018, 'Emma Evans'), (3019, 'Alexis Martinez'), /* ID_NOs for Flight Attendants*/
+(3020, 'Ethan Garcia'), (3021, 'Natalie Moore'), (3022, 'Logan Davis'), (3023, 'Madison Wilson'), (3024, 'Caleb Thompson'), /* ID_NOs for Flight Attendants*/
+(3025, 'Grace White'), (3026, 'Austin Harris'), (3027, 'Victoria Allen'), (3028, 'Dylan Baker'), (3029, 'Sophia Carter'), /* ID_NOs for Flight Attendants*/
+
+(3030, 'Connor Robinson'), (3031, 'Avery Turner'), (3032, 'Mia Mitchell'), (3033, 'Noah Smith'), (3034, 'Ava Johnson'), /* ID_NOs for Flight Attendants*/
+(3035, 'Evan Anderson'), (3036, 'Zoe Hall'), (3037, 'Christopher Taylor'), (3038, 'Ella Hernandez'), (3039, 'Jack Adams'), /* ID_NOs for Flight Attendants*/
+(3040, 'Mason King'), (3041, 'Sydney Scott'), (3042, 'Harrison Wright'), (3043, 'Alyssa Hill'), (3044, 'Luke Clark'), /* ID_NOs for Flight Attendants*/
 
 
 
