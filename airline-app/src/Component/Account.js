@@ -68,6 +68,7 @@ function Account() {
 
     return (
         <Container style={{ padding: "5em" }}>
+            <Button tabIndex size="huge" primary onClick={() => navigate('/')}>Home</Button>
             <h1>Please Create an Account</h1>
             {successMessage && <Message success>{successMessage}</Message>}
             {errorMessage && <Message error>{errorMessage}</Message>}

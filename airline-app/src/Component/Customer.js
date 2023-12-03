@@ -10,8 +10,12 @@ function Customer({customerInfo, setCustomerlg}) {
     const [thirdOpen, setThirdOpen] = useState(false);
     const [updateTrigger, setUpdateTrigger] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [cancelLoading, setCancelLoading] = useState(false);
+
     const [bookingLoading, setBookingLoading] = useState(false);
     const [message, setMessage] = useState(null);
+    const [messageCancel, setMessageCancel] = useState(null);
+
 
 
     const [selectedFlight, setSelectedFlight] = useState(null);
@@ -192,7 +196,6 @@ function Customer({customerInfo, setCustomerlg}) {
                 console.log(`Booking confirmed for ${passenger.NAME}:`, response.data);
                 if (response.status !== 201) {
                     throw new Error('Non-201 response');
-                    bookingSuccessful = false;
                 }
             } catch (error) {
                 console.error(`Error during booking for ${passenger.NAME}:`, error);
@@ -218,16 +221,47 @@ function Customer({customerInfo, setCustomerlg}) {
 
     const logout = () => {
         setCustomerlg(false);
+
+        //reset all states
+        setAvailableFlights([]);
+        setBookedFlights([]);
+        setUpdateTrigger(0);
+        setLoading(false);
+        setBookingLoading(false);
+        setMessage(null);
+        setSelectedFlight(null);
+        setInsurance(null);
+        setVoucher(null);
+        setPassangersInfo([customerInfo]);
+        setOpen(false);
+        setSecondOpen(false);
+        setThirdOpen(false);
+
         navigate('/');
     }
 
     const [name, setName] = useState("");
     const [pas, setPas] = useState("");
     const [passangersInfo, setPassangersInfo] = useState([customerInfo]);
-    const [extra, setExtra] = useState(false);
+    const [errorUsr, setErrorUsr] = useState(null);
+    const [errorPass, setErrorPass] = useState(null);
 
 
     const addPassenger = async () => {
+
+        if(name === "" && pas === ""){
+            setErrorUsr({ content: 'Please enter a user', pointing: 'below' });
+            setErrorPass("Please enter a password");
+            return;
+        } else if (name !== "" && pas === ""){
+            setErrorPass("Please enter a password");
+            return;
+        } else if (name === "" && pas !== ""){
+            setErrorUsr({ content: 'Please enter a user', pointing: 'below' });
+            return;
+        }
+
+
         const getPassenger = async () => {
             try {
                 const response = await axios.get(`${url}/api/login/customer`, {
@@ -237,6 +271,9 @@ function Customer({customerInfo, setCustomerlg}) {
                 });
                 if(response.status === 200) {
                     return response.data;
+                }else if (response.status === 204){
+                    setErrorUsr({ content: 'Invalid User', pointing: 'below' });
+                    setErrorPass("Invalid User");
                 } else {
                     throw new Error('Non-200 response');
                 }
@@ -262,6 +299,7 @@ function Customer({customerInfo, setCustomerlg}) {
 
     const handleDelete = async (flight) => {
         try {
+            setCancelLoading(true);
             const response = await axios.delete(`${url}/api/customer/cancel`, {
                 params: {
                     USERNAME: customerInfo.USERNAME,
@@ -270,7 +308,16 @@ function Customer({customerInfo, setCustomerlg}) {
             });
 
             if(response.status === 200) {
+                setCancelLoading(false);
                 setUpdateTrigger(oldValue => oldValue + 1);
+                setThirdOpen(false);
+
+                // Display success message for 30 seconds
+                setMessageCancel(true);
+                setTimeout(() => {
+                    setMessageCancel(null);
+                }, 5000); // 30 seconds
+
             } else {
                 throw new Error('Non-200 response');
             }
@@ -295,129 +342,135 @@ function Customer({customerInfo, setCustomerlg}) {
 
     const modalBooking = () => {
         return (
-            <Modal size="fullscreen" closeIcon open={open} trigger={<Button icon labelPosition='left' primary size="large"><Icon name='plane' />Book Flight</Button>} onClose={resetModalState} onOpen={() => setOpen(true)}>
+            <Modal size={selectedFlight ? "fullscreen" : "large" } closeIcon open={open} trigger={<Button icon labelPosition='left' primary size="large"><Icon name='plane' />Book Flight</Button>} onClose={resetModalState} onOpen={() => setOpen(true)}>
                 <Header content='Book a Flight' />
                 <Segment loading={bookingLoading} style={{padding: "0.5em"}} vertical>
                     <Modal.Content>
-                        <Grid columns={3} relaxed='very' divided style={{padding:"1em"}}>
+                        <Grid columns={selectedFlight ? 3 : 1} relaxed='very' divided style={{padding:"1em"}}>
                             <Grid.Column>
-                                <Form>
-                                    <Form.Field required>
-                                        <Header as='h3' content='Flight Information' />
-                                        <Dropdown
-                                            placeholder='Select Flight'
-                                            fluid
-                                            selection
-                                            options={flightOptions}
-                                            onChange={handleFlightSelect}
-                                        />
-                                    </Form.Field>
-                                    <Grid columns={2}>
-                                        <Grid.Column>
-                                        <Header as='h3' content='Passenger Information' />
-                                        </Grid.Column>
-                                        <Grid.Column textAlign="right">
-                                            <Button animated compact size="medium" onClick={() => setSecondOpen(true)}>
-                                                <Button.Content visible>Add</Button.Content>
-                                                <Button.Content hidden>
-                                                    <Icon name='plus' />
-                                                </Button.Content>
-                                            </Button>
-                                        </Grid.Column>
-                                    </Grid>
-                                    <Modal size="small" closeIcon open={secondOpen} onClose={() => setSecondOpen(false)} onOpen={() => setSecondOpen(true)}>
-                                        <Header content='Add Passenger' />
-                                        <Modal.Content>
-                                            <Header as='h4' content='Continue with account' />
+                                <Header as='h3' content='Flight Information' />
+                                <Dropdown
+                                    placeholder='Select Flight'
+                                    fluid
+                                    selection
+                                    options={flightOptions}
+                                    onChange={handleFlightSelect}
+                                />
+                                
+                                {
+                                    selectedFlight && (
+                                        <>
+                                            <Divider/>
                                             <Form>
-                                                <Form.Field required>
-                                                    <Form.Input placeholder='Username' value={name} onChange={e => setName(e.target.value)} />
-                                                    <Form.Input placeholder='Password' value={pas} onChange={e => setPas(e.target.value)} />
-                                                </Form.Field>
-                                            </Form>
-                                        </Modal.Content>
-                                        <Modal.Actions>
-                                            <Button color='green' onClick={addPassenger}>
-                                                <Icon name='checkmark' /> Add
-                                            </Button>
-                                        </Modal.Actions>
-                                    </Modal>
-                                    <Segment>
-                                        <List style={{padding:"0.1em"}}>
-                                            <List.Item>
-                                                <List.Content>
-                                                    {passangersInfo.map((passenger, index) => (
-                                                        <List.Item style={{marginTop: "0.3em"}} key={index}>
+                                                <Grid columns={2}>
+                                                    <Grid.Column>
+                                                    <Header as='h3' content='Passenger Information' />
+                                                    </Grid.Column>
+                                                    <Grid.Column textAlign="right">
+                                                        <Button animated compact size="medium" onClick={() => setSecondOpen(true)}>
+                                                            <Button.Content visible>Add</Button.Content>
+                                                            <Button.Content hidden>
+                                                                <Icon name='plus' />
+                                                            </Button.Content>
+                                                        </Button>
+                                                    </Grid.Column>
+                                                </Grid>
+                                                <Modal size="small" closeIcon open={secondOpen} onClose={() => setSecondOpen(false)} onOpen={() => setSecondOpen(true)} style={{marginTop: "5em"}}>
+                                                    <Header content='Add Passenger' />
+                                                    <Modal.Content>
+                                                        <Header as='h4' content='Continue with account' />
+                                                        <Form onSubmit={addPassenger}>
+                                                            <Form.Field required>
+                                                                <Form.Input error={errorUsr} placeholder='Username' fluid icon='user' iconPosition='left' value={name} onChange={e =>{ setName(e.target.value); setErrorUsr(null);}} />
+                                                                <Form.Input error={errorPass} placeholder='Password' fluid icon='lock' iconPosition='left' type='password' value={pas} onChange={e => {setPas(e.target.value); setErrorPass(null);}} />
+                                                                <Form.Button color='black' fluid size='large' type='submit'>Login</Form.Button>
+                                                            </Form.Field>
+                                                        </Form>
+                                                    </Modal.Content>
+                                                </Modal>
+                                                <Segment>
+                                                    <List style={{padding:"0.1em"}}>
+                                                        <List.Item>
                                                             <List.Content>
-                                                                <List.Header>{passenger.NAME}</List.Header>
-                                                                <List.Description>
-                                                                    <b>Date of Birth:</b> {passenger.BIRTH} <br/>
-                                                                    <b>Phone Number:</b> {passenger.PHONE_NUMBER}
-                                                                </List.Description>
+                                                                {passangersInfo.map((passenger, index) => (
+                                                                    <List.Item style={{marginTop: "0.3em"}} key={index}>
+                                                                        <List.Content>
+                                                                            <List.Header>{passenger.NAME}</List.Header>
+                                                                            <List.Description>
+                                                                                <b>Phone Number:</b> {passenger.PHONE_NUMBER}
+                                                                            </List.Description>
+                                                                        </List.Content>
+                                                                    </List.Item>
+                                                                ))}
                                                             </List.Content>
                                                         </List.Item>
-                                                    ))}
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Segment>
-                                    <Divider/>
-                                    <Header as='h3' content='Payment Info' />
-                                    <Form.Field>
-                                        <Form.Input placeholder='Name on Card' />
-                                        <Form.Input placeholder='Credit Card Number' />
-                                    </Form.Field>
-                                    <Form.Group widths='equal'>
-                                        <Form.Input fluid placeholder='MM/YY' />
-                                        <Form.Input fluid placeholder='CVV' />
-                                    </Form.Group>
-                                    <Divider/>
-                                    <Form.Field>
-                                        <Form.Input placeholder='Add Voucher for free passanger' value={voucher} onChange={e => setVoucher(e.target.value)} />
-                                    </Form.Field>
-                                </Form>
+                                                    </List>
+                                                </Segment>
+                                                <Divider/>
+                                                <Header as='h3' content='Payment Info' />
+                                                <Form.Field>
+                                                    <Form.Input placeholder='Name on Card' />
+                                                    <Form.Input placeholder='Credit Card Number' />
+                                                </Form.Field>
+                                                <Form.Group widths='equal'>
+                                                    <Form.Input fluid placeholder='MM/YY' />
+                                                    <Form.Input fluid placeholder='CVV' />
+                                                </Form.Group>
+                                                <Divider/>
+                                                <Form.Field>
+                                                    <Form.Input placeholder='Add Voucher for free passanger' value={voucher} onChange={e => setVoucher(e.target.value)} />
+                                                </Form.Field>
+                                            </Form>
+                                        </>
+                                    )
+                                }
                             </Grid.Column>
-                            <Grid.Column>
-                                <Header as='h3' content='Seat Selection' />
-                                <SeatMap setPassangersInfo={setPassangersInfo} passangersInfo={passangersInfo} selectedFlight={selectedFlight} />
-                            </Grid.Column>
-                            <Grid.Column>
-                                <Header as='h3' content='Insurance' />
-                                <Radio toggle
-                                    label='Standard Insurance'
-                                    name='radioGroup'
-                                    checked={insurance === '1'}
-                                    onChange={() => setInsurance(insurance === '1' ? '0' : '1')}
-                                />
-                                <Divider/>
-                                <Header as='h3' content='Price Summary' />
-                                <List>
-                                    {passangersInfo.map((passenger, index) => {
-                                        const individualPrice = calculateIndividualPrice(passenger); // Function to calculate the price for each passenger
-                                        return (
-                                            <List.Item key={index}>
-                                                <List.Content floated='right'>
-                                                    <b>${individualPrice.toFixed(2)}</b>
-                                                </List.Content>
-                                                <List.Content>
-                                                    {passenger.NAME}'s Seat Price
-                                                </List.Content>
-                                            </List.Item>
-                                        );
-                                    })}
-                                    <Divider/>
-                                    <List.Item>
-                                        <List.Content floated='right'>
-                                            <b>${calculatePrice().toFixed(2)}</b>
-                                        </List.Content>
-                                        <List.Content>
-                                            Total Price
-                                        </List.Content>
-                                    </List.Item>
-                                </List>
-                            </Grid.Column>
+                            {
+                                selectedFlight && (
+                                    <>
+                                        <Grid.Column>
+                                            <Header as='h3' content='Seat Selection' />
+                                            <SeatMap setPassangersInfo={setPassangersInfo} passangersInfo={passangersInfo} selectedFlight={selectedFlight} />
+                                        </Grid.Column>
+                                        <Grid.Column>
+                                            <Header as='h3' content='Insurance' />
+                                            <Radio toggle
+                                                label='Standard Insurance'
+                                                name='radioGroup'
+                                                checked={insurance === '1'}
+                                                onChange={() => setInsurance(insurance === '1' ? '0' : '1')}
+                                            />
+                                            <Divider/>
+                                            <Header as='h3' content='Price Summary' />
+                                            <List>
+                                                {passangersInfo.map((passenger, index) => {
+                                                    const individualPrice = calculateIndividualPrice(passenger); // Function to calculate the price for each passenger
+                                                    return (
+                                                        <List.Item key={index}>
+                                                            <List.Content floated='right'>
+                                                                <b>${individualPrice.toFixed(2)}</b>
+                                                            </List.Content>
+                                                            <List.Content>
+                                                                {passenger.NAME}'s Seat Price
+                                                            </List.Content>
+                                                        </List.Item>
+                                                    );
+                                                })}
+                                                <Divider/>
+                                                <List.Item>
+                                                    <List.Content floated='right'>
+                                                        <b>${calculatePrice().toFixed(2)}</b>
+                                                    </List.Content>
+                                                    <List.Content>
+                                                        Total Price
+                                                    </List.Content>
+                                                </List.Item>
+                                            </List>
+                                        </Grid.Column>                                    
+                                    </>
+                                )
+                            }
                         </Grid>
-
                     </Modal.Content>
                 </Segment>
                 <Modal.Actions>
@@ -433,48 +486,50 @@ function Customer({customerInfo, setCustomerlg}) {
         return (
             <Modal size="large" closeIcon open={thirdOpen} trigger={<Button icon labelPosition='left' size="large"><Icon name='list' />Booked Flights</Button>} onClose={() => setThirdOpen(false)} onOpen={() => setThirdOpen(true)}>
                 <Modal.Content>
-                    <Header content='Booked Flights' />
-                    <Table singleLine>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Flight Number</Table.HeaderCell>
-                                <Table.HeaderCell>Origin</Table.HeaderCell>
-                                <Table.HeaderCell>Destination</Table.HeaderCell>
-                                <Table.HeaderCell>Date</Table.HeaderCell>
-                                <Table.HeaderCell>Time</Table.HeaderCell>
-                                <Table.HeaderCell>Seat Type</Table.HeaderCell>
-                                <Table.HeaderCell>Seat Number</Table.HeaderCell>
-                                <Table.HeaderCell>Insurance</Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                        {
-                            bookedFlights.map((flight, index) =>
-                                (
-                                    <Table.Row key={index}>
-                                        <Table.Cell>{flight.FLIGHT_NUMBER}</Table.Cell>
-                                        <Table.Cell>{flight.ORIGIN.split(" ").slice(1).join(" ")}</Table.Cell>
-                                        <Table.Cell>{flight.DESTINATION.split(" ").slice(1).join(" ")}</Table.Cell>
-                                        <Table.Cell>{flight.TIME_DEPARTURE.split('T')[0]}</Table.Cell>
-                                        <Table.Cell>{flight.TIME_DEPARTURE.split('T')[1].split(':').slice(0, 2).join(':')}</Table.Cell>
-                                        <Table.Cell>{flight.SEAT_TYPE}</Table.Cell>
-                                        <Table.Cell>{flight.SEAT_NUMBER}</Table.Cell>
-                                        <Table.Cell>{flight.INSURANCE_STATUS === 1 ? 'Yes' : 'No'}</Table.Cell>
-                                        <Table.Cell collapsing>
-                                                <Button animated="vertical" floated="left" size='midium' onClick={()=>handleDelete(flight)}>
-                                                    <Button.Content visible>Cancel</Button.Content>
-                                                    <Button.Content hidden>
-                                                        {flight.FLIGHT_NUMBER}
-                                                    </Button.Content>
-                                                </Button>
-                                            </Table.Cell>
-                                    </Table.Row>
+                    <Segment loading={cancelLoading} style={{ padding: '0.5em' }} vertical>
+                        <Header content='Booked Flights' />
+                        <Table singleLine>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>Flight Number</Table.HeaderCell>
+                                    <Table.HeaderCell>Origin</Table.HeaderCell>
+                                    <Table.HeaderCell>Destination</Table.HeaderCell>
+                                    <Table.HeaderCell>Date</Table.HeaderCell>
+                                    <Table.HeaderCell>Time</Table.HeaderCell>
+                                    <Table.HeaderCell>Seat Type</Table.HeaderCell>
+                                    <Table.HeaderCell>Seat Number</Table.HeaderCell>
+                                    <Table.HeaderCell>Insurance</Table.HeaderCell>
+                                    <Table.HeaderCell></Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                            {
+                                bookedFlights.map((flight, index) =>
+                                    (
+                                        <Table.Row key={index}>
+                                            <Table.Cell>{flight.FLIGHT_NUMBER}</Table.Cell>
+                                            <Table.Cell>{flight.ORIGIN.split(" ").slice(1).join(" ")}</Table.Cell>
+                                            <Table.Cell>{flight.DESTINATION.split(" ").slice(1).join(" ")}</Table.Cell>
+                                            <Table.Cell>{flight.TIME_DEPARTURE.split('T')[0]}</Table.Cell>
+                                            <Table.Cell>{flight.TIME_DEPARTURE.split('T')[1].split(':').slice(0, 2).join(':')}</Table.Cell>
+                                            <Table.Cell>{flight.SEAT_TYPE}</Table.Cell>
+                                            <Table.Cell>{flight.SEAT_NUMBER}</Table.Cell>
+                                            <Table.Cell>{flight.INSURANCE_STATUS === 1 ? 'Yes' : 'No'}</Table.Cell>
+                                            <Table.Cell collapsing>
+                                                    <Button animated="vertical" floated="left" size='midium' onClick={()=>handleDelete(flight)}>
+                                                        <Button.Content visible>Cancel</Button.Content>
+                                                        <Button.Content hidden>
+                                                            {flight.FLIGHT_NUMBER}
+                                                        </Button.Content>
+                                                    </Button>
+                                                </Table.Cell>
+                                        </Table.Row>
+                                    )
                                 )
-                            )
-                        }
-                    </Table.Body>
-                    </Table>
+                            }
+                            </Table.Body>
+                        </Table>
+                    </Segment>
                 </Modal.Content>
             </Modal>
         )
@@ -503,6 +558,15 @@ function Customer({customerInfo, setCustomerlg}) {
                     <Message style={{marginLeft: "10em", marginRight: "10em"}}
                         success
                         header='Your booking was successful'
+                        content='You can view your bookings below'
+                    />
+                )
+            }
+            {
+                messageCancel && (
+                    <Message style={{marginLeft: "10em", marginRight: "10em"}}
+                        success
+                        header='Your booking was successfuly cancelled'
                         content='You can view your bookings below'
                     />
                 )
