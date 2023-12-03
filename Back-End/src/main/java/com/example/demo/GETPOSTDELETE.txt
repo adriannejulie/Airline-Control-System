@@ -1,0 +1,422 @@
+
+Customer:
+
+createAccount()
+    localhost:8080/api/customer/signup
+    POST function to create an account
+
+    Body:
+    {
+        "USERNAME" : "NewUser",
+        "PASSWORD" : "customer",
+        "NAME" : "New User",
+        "BIRTH" : "2000-03-04",
+        "PHONE_NUMBER" : "123-456-7890",
+        "EMAIL" : "newUser@gmail.com",
+        "MEMBERSHIP_ID" : 0
+    }
+
+bookFlight()
+    localhost:8080/api/customer/booking
+    POST function to book a flight
+    
+    Body:
+    {
+        "USERNAME": "NewUser",
+        "FLIGHT_NUMBER": 3,
+        "SEAT_TYPE": "Business",
+        "SEAT_NUMBER": 3,
+        "INSURANCE_STATUS":1
+    }
+
+cancelFlight()  
+    localhost:8080/api/customer/cancel
+    DELETE function to cancel a flight
+
+    Body:
+    {
+        "USERNAME": "NewUser",
+        "FLIGHT_NUMBER": 3,
+        "SEAT_TYPE": "Business",
+        "SEAT_NUMBER": 3,
+        "INSURANCE_STATUS":1
+    }
+
+getFlights()
+    localhost:8080/api/customer/viewFlights
+    GET function to get all flights that is booked for a specific customer
+    
+    Input into Thunder Client Query
+    parameter: USERNAME 
+    value: NewUser
+
+    Response:
+    [
+        {
+            "USERNAME": "NewUser",
+            "FLIGHT_NUMBER": 6,
+            "SEAT_TYPE": "Ordinary",
+            "SEAT_NUMBER": 6,
+            "INSURANCE_STATUS": 0
+        },
+        {
+            "USERNAME": "NewUser",
+            "FLIGHT_NUMBER": 4,
+            "SEAT_TYPE": "Ordinary",
+            "SEAT_NUMBER": 6,
+            "INSURANCE_STATUS": 0
+        }
+    ]
+
+
+
+Login:
+
+getCustomerLogin()
+    localhost:8080/api/login/customer
+    GET function to get customer information after login
+
+    Input into Thunder Client Query
+    parameter: USERNAME 
+    value: NewUser
+    
+    Response:
+    {
+        "USERNAME": "NewUser",
+        "PASSWORD": "customer",
+        "NAME": "New User",
+        "BIRTH": "2000-03-03",
+        "PHONE_NUMBER": "123-456-7890",
+        "EMAIL": "newUser@gmail.com",
+        "MEMBERSHIP_ID": 0
+    }
+
+getCrewLogin()
+    localhost:8080/api/login/crew
+    GET function to get crew information after login
+
+    Input into Thunder Client Query
+    parameter: USERNAME 
+    value: 2000
+    
+    Response:
+    {
+    "USERNAME": 2000,
+    "NAME": "John Smith"
+    }
+
+getAgentlogin(){
+    localhost:8080/api/login/airlineAgent
+    GET function to get airline agent information after login
+
+    Input into Thunder Client Query
+    parameter: USERNAME 
+    value: 1000
+    
+    Response:
+    {
+    "USERNAME": 1000,
+    "NAME": "John Doe"
+    }
+}
+
+
+
+
+Crew:
+
+getCrewFlights()
+    localhost:8080/api/crew/scheduledFlights
+    GET function to get all flights a crew member is scheduled for
+
+    Input into Thunder Client Query
+    parameter: USERNAME 
+    value: 2000
+    
+    Response:
+    [
+    {
+        "flightNumber": 1,
+        "destination": "CYYZ",
+        "origin": "CYVR",
+        "timeDeparture": "2023-12-20T07:00:05.000+00:00",
+        "aircraftType": 1,
+        "pilot": 0,
+        "flightAttendant1": 0,
+        "flightAttendant2": 0,
+        "flightAttendant3": 0,
+        "flightAttendant4": 0,
+        "allFlightAttendants": [
+        0,
+        0,
+        0,
+        0
+        ]
+    },
+    {
+        "flightNumber": 5,
+        "destination": "CYUL",
+        "origin": "CYYC",
+        "timeDeparture": "2023-12-25T07:00:05.000+00:00",
+        "aircraftType": 5,
+        "pilot": 0,
+        "flightAttendant1": 0,
+        "flightAttendant2": 0,
+        "flightAttendant3": 0,
+        "flightAttendant4": 0,
+        "allFlightAttendants": [
+        0,
+        0,
+        0,
+        0
+        ]
+    },
+    {
+        "flightNumber": 9,
+        "destination": "CYOW",
+        "origin": "CYTZ",
+        "timeDeparture": "2023-12-29T07:00:05.000+00:00",
+        "aircraftType": 9,
+        "pilot": 0,
+        "flightAttendant1": 0,
+        "flightAttendant2": 0,
+        "flightAttendant3": 0,
+        "flightAttendant4": 0,
+        "allFlightAttendants": [
+        0,
+        0,
+        0,
+        0
+        ]
+    }
+    ]
+
+
+
+
+Flights:
+
+getFlightData()
+
+    localhost:8080/api/flightData/logistics
+
+    GET function that returns flight number, destination, origin, departure time, aircraft type
+    
+    Input into Thunder Client Query
+    parameter: FLIGHT_NUMBER
+    value: 1
+    
+    Response:
+    {
+        "allFlightAttendants": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "FLIGHT_NUMBER": 1,
+        "DESTINATION": "CYYZ",
+        "ORIGIN": "CYVR",
+        "TIME_DEPARTURE": "2023-12-20T07:00:05.000+00:00",
+        "AIRCRAFT_TYPE": 1,
+        "PILOT1": 0,
+        "FLIGHT_ATTENDANT1": 0,
+        "FLIGHT_ATTENDANT2": 0,
+        "FLIGHT_ATTENDANT3": 0,
+        "FLIGHT_ATTENDANT4": 0
+    }
+
+
+getFlightCrewOnly()
+
+    localhost:8080/api/flightData/flightCrew
+
+    GET function that returns all crew members IDs and their names
+    
+    Input into Thunder Client Query
+    parameter: FLIGHT_NUMBER
+    value: 1
+    
+    Response:
+    [
+        {
+            "USERNAME": 2000,
+            "NAME": "John Smith"
+        },
+        {
+            "USERNAME": 3000,
+            "NAME": "Daniel White"
+        },
+        {
+            "USERNAME": 3001,
+            "NAME": "Lauren Moore"
+        },
+        {
+            "USERNAME": 3002,
+            "NAME": "Kevin Carter"
+        },
+        {
+            "USERNAME": 3003,
+            "NAME": "Ashley Clark"
+        }
+    ]
+getFlight()
+    localhost:8080/api/flightData/flight
+
+
+    GET function that returns all of the data of a flight
+    
+    Input into Thunder Client Query
+    parameter: FLIGHT_NUMBER
+    value: 1
+    
+    Response:
+   {
+        "allFlightAttendants": [
+            3000,
+            3001,
+            3002,
+            3003
+        ],
+        "FLIGHT_NUMBER": 1,
+        "DESTINATION": "CYYZ",
+        "ORIGIN": "CYVR",
+        "TIME_DEPARTURE": "2023-12-20T07:00:05.000+00:00",
+        "AIRCRAFT_TYPE": 1,
+        "PILOT1": 2000,
+        "FLIGHT_ATTENDANT1": 3000,
+        "FLIGHT_ATTENDANT2": 3001,
+        "FLIGHT_ATTENDANT3": 3002,
+        "FLIGHT_ATTENDANT4": 3003
+    }
+
+getAllFlights()
+    localhost:8080/api/flightData/allData
+
+
+    GET function that returns ALL flights WITHOUT CREW or PILOT
+    
+    No Input into Thunder Client Queryx
+    
+
+
+getPassengers()
+    localhost:8080/api/flightData/passengers
+
+
+    GET function that returns all passengers on a specific flight
+    
+    Input into Thunder Client Query
+    parameter: FLIGHT_NUMBER 
+    value: 1
+    
+    Response:
+    [
+        {
+            "number": 0,
+            "insurance": 0,
+            "USERNAME": "George Gower",
+            "FLIGHT_NUMBER": 0,
+            "SEAT_TYPE": null,
+            "SEAT_NUMBER": 11,
+            "INSURANCE_STATUS": 0
+        }
+    ]
+
+
+Membership:
+
+
+AirlineAgent:
+
+
+
+server.address=10.13.178.196
+server.port=9999
+
+
+what we still need:
+ - Airline Agent implementation (Back-end and Front-end)
+ - Additional passenger (Front-end) *
+ - Seat Picker (Front-End)
+ - Email (Back-end) * 
+    - Confirmation email *
+    - Membership email 
+        - Member Credit Card info *
+        - Membership number *
+        - Companion fligth code 'Companion' *
+    - Cancellation notification email *
+    - Monthly scheduled promotion emails *
+ - POST and GET request for seat map (back-end)
+
+ 
+
+[
+    {"seatNumber": "0A", "seatStatus": "Reserved"},
+    {"seatNumber": "0B", "seatStatus": "Open"},
+    {"seatNumber": "0C", "seatStatus": "Open"},
+    {"seatNumber": "0D", "seatStatus": "Open"},
+    {"seatNumber": "1A", "seatStatus": "Open"},
+    {"seatNumber": "1B", "seatStatus": "Open"},
+    {"seatNumber": "1C", "seatStatus": "Open"},
+    {"seatNumber": "1D", "seatStatus": "Open"},
+
+    {"seatNumber": "2A", "seatStatus": "Open"},
+    {"seatNumber": "2B", "seatStatus": "Open"},
+    {"seatNumber": "2C", "seatStatus": "Open"},
+    {"seatNumber": "2D", "seatStatus": "Open"},
+    {"seatNumber": "3A", "seatStatus": "Open"},
+    {"seatNumber": "3B", "seatStatus": "Open"},
+    {"seatNumber": "3C", "seatStatus": "Open"},
+    {"seatNumber": "3D", "seatStatus": "Open"},
+    {"seatNumber": "4A", "seatStatus": "Open"},
+    {"seatNumber": "4B", "seatStatus": "Open"},
+    {"seatNumber": "4C", "seatStatus": "Open"},
+    {"seatNumber": "4D", "seatStatus": "Open"},
+    {"seatNumber": "5A", "seatStatus": "Open"},
+    {"seatNumber": "5B", "seatStatus": "Open"},
+    {"seatNumber": "5C", "seatStatus": "Open"},
+    {"seatNumber": "5D", "seatStatus": "Open"},
+
+    {"seatNumber": "6A", "seatStatus": "Open"},
+    {"seatNumber": "6B", "seatStatus": "Open"},
+    {"seatNumber": "6C", "seatStatus": "Open"},
+    {"seatNumber": "6D", "seatStatus": "Open"},
+    {"seatNumber": "7A", "seatStatus": "Open"},
+    {"seatNumber": "7B", "seatStatus": "Open"},
+    {"seatNumber": "7C", "seatStatus": "Open"},
+    {"seatNumber": "7D", "seatStatus": "Open"},
+    {"seatNumber": "8A", "seatStatus": "Open"},
+    {"seatNumber": "8B", "seatStatus": "Open"},
+    {"seatNumber": "8C", "seatStatus": "Open"},
+    {"seatNumber": "8D", "seatStatus": "Open"},
+    {"seatNumber": "9A", "seatStatus": "Open"},
+    {"seatNumber": "9B", "seatStatus": "Open"},
+    {"seatNumber": "9C", "seatStatus": "Open"},
+    {"seatNumber": "9D", "seatStatus": "Open"},
+    {"seatNumber": "10A", "seatStatus": "Open"},
+    {"seatNumber": "10B", "seatStatus": "Open"},
+    {"seatNumber": "10C", "seatStatus": "Open"},
+    {"seatNumber": "10D", "seatStatus": "Open"},
+    {"seatNumber": "11A", "seatStatus": "Open"},
+    {"seatNumber": "11B", "seatStatus": "Open"},
+    {"seatNumber": "11C", "seatStatus": "Open"},
+    {"seatNumber": "11D", "seatStatus": "Open"},
+  ]
+
+
+  Back end seat reservation:
+
+  - Return a json file of available seats
+    1. GET request for all booked flights @param FLIGHT_NUMBER
+    2. Go through the JSON file, return a list seat numbers that are Open
+        - {"9C", "10C", "10D", etc...}
+    2. Go through the JSON file, return a JSON file of seats that have the value "Open"
+        -     {"seatNumber": "10B", "seatStatus": "Open"},
+                {"seatNumber": "10C", "seatStatus": "Open"},
+                {"seatNumber": "10D", "seatStatus": "Open"},
+                {"seatNumber": "11A", "seatStatus": "Open"},
+                {"seatNumber": "11B", "seatStatus": "Open"},
+                {"seatNumber": "11C", "seatStatus": "Open"},
+                {"seatNumber": "11D", "seatStatus": "Open"},
+    3. I need the seat number to be returned with the bookFlight values
