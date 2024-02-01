@@ -24,8 +24,8 @@ public class EmailService {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com"); // e.g., "smtp.gmail.com"
         mailSender.setPort(587); // Specify the port
-        mailSender.setUsername("airreactairline@gmail.com"); // Your email address
-        mailSender.setPassword("bcaz zqcp cies edrz"); // Your email password
+        mailSender.setUsername("email@gmail.com"); // Fake email
+        mailSender.setPassword("password"); // Fake password
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
